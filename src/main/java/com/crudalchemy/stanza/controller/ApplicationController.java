@@ -216,6 +216,10 @@ public class ApplicationController {
         return new RedirectView("/profile");
     }
 
+    @GetMapping("/test")
+    public String getTestPage() {
+        return "test.hmtl";
+    }
 
 }
 
