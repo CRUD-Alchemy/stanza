@@ -55,6 +55,7 @@ public class ApplicationController {
             ApplicationUser loggedInUser = applicationUserRepository.findByUsername(principal.getName());
             model.addAttribute("loggedInUser", loggedInUser);
         }
+        System.out.println("hello2");
         //List<Topic> topicList = topicRepository.findByOrderByMostRecentPostDateDesc();
         //model.addAttribute("topicList", topicList);
         return "topic.html";
