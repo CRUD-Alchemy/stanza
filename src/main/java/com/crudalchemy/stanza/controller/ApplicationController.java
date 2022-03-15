@@ -218,7 +218,7 @@ public class ApplicationController {
 
     @GetMapping("/test")
     public String getTestPage() {
-        return "test.hmtl";
+        return "test.html";
     }
 
 }
