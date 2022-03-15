@@ -217,7 +217,7 @@ public class ApplicationController {
     }
 
     @GetMapping("/test")
-    public String getTestPage() {
+    public String getTestPage(Principal principal, Model model) {
         return "test.html";
     }
 
