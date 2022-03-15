@@ -49,6 +49,7 @@ public class ApplicationController {
     // possibly rename in the future
     @GetMapping("/general")
     public String getGeneralBoard(Principal principal, Model model) {
+        System.out.println("hello");
         if(principal != null) {
             // revisit - possibly change loggedInUser
             ApplicationUser loggedInUser = applicationUserRepository.findByUsername(principal.getName());
@@ -56,7 +57,7 @@ public class ApplicationController {
         }
         //List<Topic> topicList = topicRepository.findByOrderByMostRecentPostDateDesc();
         //model.addAttribute("topicList", topicList);
-        return "board.html";
+        return "topic.html";
     }
 
     @GetMapping("/general/{topicId}")
