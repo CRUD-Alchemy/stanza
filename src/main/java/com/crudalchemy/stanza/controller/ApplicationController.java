@@ -121,7 +121,7 @@ public class ApplicationController {
         String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
         newUser.setPhoto(fileName);
         applicationUserRepository.save(newUser);
-        String uploadDirectory = "user-photos/" + newUser.getId();
+        String uploadDirectory = "src/main/resources/user-photos/" + newUser.getId();
         FileUploadUtil.saveFile(uploadDirectory, fileName, multipartFile);
         authWithHttpServletRequest(username, password);
 
