@@ -28,8 +28,10 @@ public class ApplicationUser implements UserDetails {
     String password;
 
     String firstName;
-
     String lastName;
+
+    @Column(nullable = true, length = 64)
+    String photo;
 
     @Column(columnDefinition = "text")
     String bio;
@@ -149,5 +151,13 @@ public class ApplicationUser implements UserDetails {
 
     public void addTopicToUserTopicList(Topic topic) {
         userThreadList.add(topic);
+    }
+
+    public String getPhoto() {
+        return photo;
+    }
+
+    public void setPhoto(String photo) {
+        this.photo = photo;
     }
 }

@@ -6,20 +6,20 @@ import com.crudalchemy.stanza.model.Topic;
 import com.crudalchemy.stanza.repository.ApplicationUserRepository;
 import com.crudalchemy.stanza.repository.PostRepository;
 import com.crudalchemy.stanza.repository.TopicRepository;
+import com.crudalchemy.stanza.utility.FileUploadUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.Banner;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.view.RedirectView;
 
 import javax.persistence.EntityNotFoundException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 import java.security.Principal;
 import java.util.*;
 
@@ -98,16 +98,19 @@ public class ApplicationController {
 
     //TODO: redirect to previous page from before account creation
     @PostMapping("/create-account")
-    public RedirectView addNewAccount(String username, String password, String firstName, String lastName, String bio) {
-        //TODO: add conditional message/logic for attempted account creation when username already exists
+    public RedirectView addNewAccount(String username, String password, String firstName, String lastName, String bio,
+                                      @RequestParam("image")MultipartFile multipartFile) throws IOException {
+
         if (applicationUserRepository.findByUsername(username) != null) {
             return new RedirectView("/");
         }
-
         String hashedPassword = passwordEncoder.encode(password);
         ApplicationUser newUser = new ApplicationUser(username, hashedPassword, firstName, lastName, bio);
-
+        String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
+        newUser.setPhoto(fileName);
         applicationUserRepository.save(newUser);
+        String uploadDirectory = "user-photos/" + newUser.getId();
+        FileUploadUtil.saveFile(uploadDirectory, fileName, multipartFile);
         authWithHttpServletRequest(username, password);
 
         return new RedirectView("/");
@@ -237,7 +240,6 @@ public class ApplicationController {
         }
         return new RedirectView("/profile");
     }
-
 
 }
 
